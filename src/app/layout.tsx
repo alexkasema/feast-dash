@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Recursive } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const recursive = Recursive({ subsets: ["latin"] });
 
@@ -18,8 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body className={cn("relative h-full antialiased", recursive.className)}>
+        <Navbar />
         <main className="relative grainy-light flex flex-col  min-h-screen">
           <div className="flex-grow flex-1">{children}</div>
+          <Footer />
         </main>
       </body>
     </html>
