@@ -1,9 +1,13 @@
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import { buttonVariants } from "./ui/button";
+import { getServerSession } from "next-auth";
+import UserAccountNav from "./UserAccountNav";
 
-const Navbar = () => {
-  const user = undefined;
+const Navbar = async () => {
+  const session = await getServerSession();
+  const user = session?.user;
+
   return (
     <nav className="sticky z-[100] h-14 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
       <MaxWidthWrapper>
@@ -64,14 +68,7 @@ const Navbar = () => {
                 <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
               )}
               {user ? (
-                <Link
-                  href="/sign-in"
-                  className={buttonVariants({
-                    variant: "ghost",
-                  })}
-                >
-                  User Name
-                </Link>
+                <UserAccountNav user={user} />
               ) : (
                 <Link
                   href="/sign-up"
