@@ -4,8 +4,10 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import Providers from "@/components/Providers";
-import { Toaster } from "@/components/ui/toaster";
+
+import { Toaster } from "sonner";
+import { NextAuthSessionProvider } from "@/components/SessionProvider";
+import { Providers } from "@/components/Providers";
 
 const recursive = Recursive({ subsets: ["latin"] });
 
@@ -30,7 +32,7 @@ export default function RootLayout({
           </main>
         </Providers>
 
-        <Toaster />
+        <Toaster position="top-center" richColors />
       </body>
     </html>
   );

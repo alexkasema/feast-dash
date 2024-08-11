@@ -3,9 +3,12 @@ import MaxWidthWrapper from "./MaxWidthWrapper";
 import { buttonVariants } from "./ui/button";
 import { getServerSession } from "next-auth";
 import UserAccountNav from "./UserAccountNav";
+import { authOptions } from "@/lib/auth";
+import { useSession } from "next-auth/react";
 
 const Navbar = async () => {
   const session = await getServerSession();
+
   const user = session?.user;
 
   return (

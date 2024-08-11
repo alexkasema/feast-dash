@@ -14,12 +14,11 @@ import {
 } from "@/lib/validators/account-credentials-validator";
 import { useMutation } from "@tanstack/react-query";
 import { signUpUser } from "./actions";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 const SignUpPage = () => {
   const router = useRouter();
-  const { toast } = useToast();
 
   const {
     register,
@@ -33,19 +32,11 @@ const SignUpPage = () => {
     mutationKey: ["sing-up-user"],
     mutationFn: signUpUser,
     onSuccess: () => {
-      toast({
-        title: "Account created successfully",
-        description: "You can now sign in",
-        variant: "default",
-      });
+      toast.success("Account created successfully, You can now sign in");
       router.push("/sign-in");
     },
     onError: (error) => {
-      toast({
-        title: "Something went wrong",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast.error(`Something went wrong: ${error.message}`);
       return;
     },
   });

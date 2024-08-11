@@ -38,4 +38,22 @@ export const authOptions: NextAuthOptions = {
   ],
   secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === "development",
+  session: {
+    strategy: "jwt",
+  },
+  callbacks: {
+    session: async ({ session, token }) => {
+      const userEmail = token.email;
+      mongoose.connect(process.env.MONGODB_URI as string);
+      const user = await User.findOne({ email: userEmail });
+      return {
+        ...session,
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+        },
+      };
+    },
+  },
 };

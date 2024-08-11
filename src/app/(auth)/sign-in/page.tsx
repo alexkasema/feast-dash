@@ -12,14 +12,13 @@ import {
   AuthCredentialsValidator,
   TAuthCredentialsValidator,
 } from "@/lib/validators/account-credentials-validator";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 
 const SignInPage = () => {
   const router = useRouter();
-  const { toast } = useToast();
 
   const [isPending, setIsPending] = useState<boolean>(false);
 
@@ -36,19 +35,14 @@ const SignInPage = () => {
 
     try {
       await signIn("credentials", { email, password, callbackUrl: "/" });
-      toast({
-        title: "Welcome to FeastDash",
-        description: "Brows through our menu to discover amazing meals",
-        variant: "default",
-      });
-
+      toast.success(
+        "Welcome to FeastDash, Browse through our menu to discover amazing meals"
+      );
       setIsPending(false);
     } catch (err) {
-      toast({
-        title: "Something went wrong",
-        description: "Please check your credentials and try again",
-        variant: "destructive",
-      });
+      toast.error(
+        "Something went wrong, Please check your credentials and try again"
+      );
     }
   };
   return (

@@ -11,8 +11,9 @@ import {
 } from "./ui/dropdown-menu";
 
 import { signOut } from "next-auth/react";
-import { useToast } from "./ui/use-toast";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { Session } from "next-auth";
 
 interface PageProps {
   user: {
@@ -23,7 +24,6 @@ interface PageProps {
 }
 
 const UserAccountNav = ({ user }: PageProps) => {
-  const { toast } = useToast();
   const router = useRouter();
   let userName = user?.name || user?.email;
 
@@ -32,14 +32,8 @@ const UserAccountNav = ({ user }: PageProps) => {
   }
 
   const signOutHandler = async () => {
-    await signOut();
-
-    toast({
-      title: "You have been signed out",
-      description: "Come back soon",
-      variant: "default",
-    });
-
+    await signOut({ callbackUrl: "/" });
+    toast.success("Logged out successfully, come back soon");
     router.push("/");
   };
   return (
@@ -58,7 +52,7 @@ const UserAccountNav = ({ user }: PageProps) => {
 
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/profile">Profile</Link>
+          <Link href="/profile/user">Profile</Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem onClick={signOutHandler} className="cursor-pointer">

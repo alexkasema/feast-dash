@@ -6,6 +6,7 @@ const UserSchema = new Schema(
     password: { type: String, required: true },
     name: { type: String },
     image: { type: String },
+    admin: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
