@@ -1,10 +1,11 @@
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
-import { NextAuthOptions } from "next-auth";
+import { getServerSession, NextAuthOptions } from "next-auth";
 import { User } from "@/models/User";
 import CredentialsProvider from "next-auth/providers/credentials";
 import clientPromise from "./mongodb";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import { mongooseConnect } from "./mongoose";
 
 export const authOptions: NextAuthOptions = {
   // @ts-ignore
@@ -57,3 +58,17 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
+
+export async function isAdmin() {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return false;
+  }
+  const email = session?.user?.email;
+  if (!email) {
+    return false;
+  }
+  mongoose.connect(process.env.MONGODB_URI as string);
+  const user = await User.findOne({ email });
+  return user?.isAdmin;
+}

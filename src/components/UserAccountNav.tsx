@@ -34,7 +34,6 @@ const UserAccountNav = ({ user }: PageProps) => {
   const signOutHandler = async () => {
     await signOut({ callbackUrl: "/" });
     toast.success("Logged out successfully, come back soon");
-    router.push("/");
   };
   return (
     <DropdownMenu>

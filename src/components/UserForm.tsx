@@ -17,7 +17,7 @@ import { toast } from "sonner";
 import { Checkbox } from "./ui/checkbox";
 
 const UserForm = ({ user }: UserDataType) => {
-  const [admin, setAmin] = useState<boolean>(user?.isAdmin || false);
+  const [admin, setAdmin] = useState<boolean>(user?.isAdmin || false);
   const {
     register,
     handleSubmit,
@@ -159,10 +159,11 @@ const UserForm = ({ user }: UserDataType) => {
           {user?.isAdmin && (
             <div className="flex gap-1 py-2">
               <Label htmlFor="isAdmin">Is Admin</Label>
-              <Checkbox {...register(`isAdmin`)} checked={user?.isAdmin} />
-              {errors?.isAdmin && (
-                <p className="text-sm text-red-500">{errors.isAdmin.message}</p>
-              )}
+              <Checkbox
+                value={"1"}
+                checked={admin}
+                onCheckedChange={() => setAdmin((prev) => !prev)}
+              />
             </div>
           )}
 
