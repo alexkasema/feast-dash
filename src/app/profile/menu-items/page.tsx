@@ -8,12 +8,21 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { getMenuItems } from "./new/actions";
 
+import axios from "axios";
+
 const MenuItemsPage = () => {
+  // const [menuItems, setMenuItems] = useState<MenuItemData[]>([]);
   const [menuItems, setMenuItems] = useState<MenuItemData[]>([]);
 
+  // useEffect(() => {
+  //   getMenuItems().then(({ menuItems }) => {
+  //     setMenuItems(menuItems!);
+  //   });
+  // }, []);
+
   useEffect(() => {
-    getMenuItems().then(({ menuItems }) => {
-      setMenuItems(menuItems!);
+    axios.get("/api/menu-items").then((res) => {
+      setMenuItems(res.data);
     });
   }, []);
 
@@ -38,7 +47,7 @@ const MenuItemsPage = () => {
             menuItems.map((item) => (
               <Link
                 key={item._id}
-                href={"/menu-items/edit/" + item._id}
+                href={"/profile/menu-items/edit/" + item._id}
                 className="bg-gray-200 rounded-lg p-4"
               >
                 <div className="relative">

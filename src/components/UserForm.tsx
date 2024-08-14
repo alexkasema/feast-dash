@@ -1,15 +1,8 @@
 "use client";
 
-import {
-  TUserInformationValidator,
-  UserInformationValidator,
-} from "@/lib/validators/user-information-validator";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useEffect, useState } from "react";
+
 import { Label } from "./ui/label";
-import { Input } from "./ui/input";
-import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { updateUser } from "@/app/profile/user/actions";
@@ -17,14 +10,25 @@ import { toast } from "sonner";
 import { Checkbox } from "./ui/checkbox";
 
 const UserForm = ({ user }: UserDataType) => {
-  const [admin, setAdmin] = useState<boolean>(user?.isAdmin || false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<TUserInformationValidator>({
-    resolver: zodResolver(UserInformationValidator),
-  });
+  const [isAdmin, setIsAdmin] = useState<boolean>(user?.isAdmin || false);
+  const [name, setName] = useState<string>(user?.name || "");
+  const [email, setEmail] = useState<string>(user?.email || "");
+  const [phone, setPhone] = useState<string>(user?.phone || "");
+  const [streetAddress, setStreetAddress] = useState<string>(
+    user?.streetAddress || ""
+  );
+  const [postalCode, setPostalCode] = useState<string>(user?.postalCode || "");
+  const [city, setCity] = useState<string>(user?.city || "");
+
+  useEffect(() => {
+    setName(user?.name || "");
+    setEmail(user?.email || "");
+    setPhone(user?.phone || "");
+    setStreetAddress(user?.streetAddress || "");
+    setPostalCode(user?.postalCode || "");
+    setCity(user?.city || "");
+    setIsAdmin(user?.isAdmin || false);
+  }, [user]);
 
   const { mutate: updateProfile, isPending } = useMutation({
     mutationKey: ["update-user-information"],
@@ -37,15 +41,7 @@ const UserForm = ({ user }: UserDataType) => {
     },
   });
 
-  const onSubmit = ({
-    name,
-    email,
-    phone,
-    streetAddress,
-    postalCode,
-    city,
-    isAdmin,
-  }: TUserInformationValidator) => {
+  const onSubmit = () => {
     const data = {
       name,
       email,
@@ -59,101 +55,72 @@ const UserForm = ({ user }: UserDataType) => {
   };
   return (
     <div className="grid gap-6">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={onSubmit}>
         <div className="grid gap-2">
           <div className="grid gap-1 py-2">
             <Label htmlFor="name">Name</Label>
-            <Input
-              value={user?.name}
-              {...register("name")}
+            <input
               type="text"
-              className={cn({
-                "focus-visible:ring-red-500": errors.name,
-              })}
+              value={name}
+              onChange={(ev) => setName(ev.target.value)}
+              required
               placeholder="Enter your name"
             />
-            {errors?.name && (
-              <p className="text-sm text-red-500">{errors.name.message}</p>
-            )}
           </div>
 
           <div className="grid gap-1 py-2">
             <Label htmlFor="email">Email</Label>
-            <Input
-              value={user?.email}
-              {...register(`email`)}
-              className={cn({
-                "focus-visible:ring-red-500": errors.email,
-              })}
-              placeholder="you@example.com"
+            <input
+              type="email"
+              value={email}
+              onChange={(ev) => setEmail(ev.target.value)}
+              required
+              placeholder="your@email.com"
             />
-            {errors?.email && (
-              <p className="text-sm text-red-500">{errors.email.message}</p>
-            )}
           </div>
 
           <div className="grid gap-1 py-2">
             <Label htmlFor="phone">Phone</Label>
-            <Input
-              {...register(`phone`)}
-              value={user?.phone}
-              className={cn({
-                "focus-visible:ring-red-500": errors.phone,
-              })}
-              placeholder="Enter your phone number"
+            <input
+              type="text"
+              value={phone}
+              onChange={(ev) => setPhone(ev.target.value)}
+              required
+              placeholder="Enter your Phone Number"
             />
-            {errors?.phone && (
-              <p className="text-sm text-red-500">{errors.phone.message}</p>
-            )}
           </div>
 
           <div className="grid gap-1 py-2">
             <Label htmlFor="streetAddress">Street Address</Label>
-            <Input
-              {...register(`streetAddress`)}
-              value={user?.streetAddress}
-              className={cn({
-                "focus-visible:ring-red-500": errors.streetAddress,
-              })}
-              placeholder="Enter Street Address"
+            <input
+              type="text"
+              value={streetAddress}
+              onChange={(ev) => setStreetAddress(ev.target.value)}
+              required
+              placeholder="Enter your Street Address"
             />
-            {errors?.streetAddress && (
-              <p className="text-sm text-red-500">
-                {errors.streetAddress.message}
-              </p>
-            )}
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <div className="grid gap-1 py-2">
               <Label htmlFor="postalCode">Postal Code</Label>
-              <Input
-                {...register(`postalCode`)}
-                value={user?.postalCode}
-                className={cn({
-                  "focus-visible:ring-red-500": errors.postalCode,
-                })}
-                placeholder="Enter postal code"
+              <input
+                type="text"
+                value={postalCode}
+                onChange={(ev) => setPostalCode(ev.target.value)}
+                required
+                placeholder="Enter your Postal Code"
               />
-              {errors?.postalCode && (
-                <p className="text-sm text-red-500">
-                  {errors.postalCode.message}
-                </p>
-              )}
             </div>
             <div className="grid gap-1 py-2">
               <Label htmlFor="city">City</Label>
-              <Input
-                {...register(`city`)}
-                value={user?.city}
-                className={cn({
-                  "focus-visible:ring-red-500": errors.city,
-                })}
-                placeholder="Enter City Name"
+              <input
+                type="text"
+                value={city}
+                onChange={(ev) => setCity(ev.target.value)}
+                required
+                placeholder="Enter your City"
               />
-              {errors?.city && (
-                <p className="text-sm text-red-500">{errors.city.message}</p>
-              )}
             </div>
           </div>
           {user?.isAdmin && (
@@ -161,8 +128,8 @@ const UserForm = ({ user }: UserDataType) => {
               <Label htmlFor="isAdmin">Is Admin</Label>
               <Checkbox
                 value={"1"}
-                checked={admin}
-                onCheckedChange={() => setAdmin((prev) => !prev)}
+                checked={isAdmin}
+                onCheckedChange={() => setIsAdmin((prev) => !prev)}
               />
             </div>
           )}

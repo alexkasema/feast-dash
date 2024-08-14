@@ -5,35 +5,61 @@ import { buttonVariants } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import { createMenuItem } from "./actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const CreateMenuItemPage = () => {
   const router = useRouter();
-  const { mutate: createMenu, isPending } = useMutation({
-    mutationKey: ["create-menu-item"],
-    mutationFn: createMenuItem,
-    onMutate: () => {
-      toast.loading("Creating menu item...");
-    },
-    onSuccess: ({ menuItem }) => {
-      console.log(menuItem);
-      toast.success(`${menuItem.name} created successfully`);
-      router.push("/profile/menu-items");
-    },
-    onError: (error) => {
-      console.error(error);
-      toast.error(`Failed to create menu item: ${error.message}`);
-    },
-  });
+  const [goToProducts, setGoToProducts] = useState(false);
+  const [isPending, setisPending] = useState<boolean>(false);
+  // const { mutate: createMenu, isPending } = useMutation({
+  //   mutationKey: ["create-menu-item"],
+  //   mutationFn: createMenuItem,
+  //   onMutate: () => {
+  //     toast.loading("Creating menu item...");
+  //   },
+  //   onSuccess: ({ menuItem }) => {
+  //     console.log(menuItem);
+  //     toast.success(`${menuItem.name} created successfully`);
+  //     router.push("/profilee/menu-items");
+  //   },
+  //   onError: (error) => {
+  //     console.error(error);
+  //     toast.error(`Failed to create menu item: ${error.message}`);
+  //   },
+  // });
 
-  const handleSubmit = (ev: FormEvent<HTMLFormElement>, data: MenuItemData) => {
-    ev.preventDefault;
-    console.log(data);
-    createMenu(data);
+  const handleSubmit = async (
+    ev: FormEvent<HTMLFormElement>,
+    data: MenuItemData
+  ) => {
+    ev.preventDefault();
+
+    const savePromise: Promise<void> = new Promise(async (resolve, reject) => {
+      const response = await axios.post("/api/menu-items", data);
+      setisPending(true);
+      if (response.status === 200) {
+        setGoToProducts(true);
+        setisPending(false);
+        resolve();
+      } else {
+        reject();
+      }
+    });
+
+    await toast.promise(savePromise, {
+      loading: "Creating Menu Item...",
+      success: "Menu Item Created!",
+      error: "Error",
+    });
   };
+
+  if (goToProducts) {
+    router.push("/profile/menu-items");
+  }
 
   return (
     <div className="container relative flex pt-20 flex-col items-center justify-center lg:px-0">
@@ -51,7 +77,7 @@ const CreateMenuItemPage = () => {
               variant: "link",
               className: "gap-1.5",
             })}
-            href="/profile/menu-items"
+            href="/profilee/menu-items"
           >
             <ArrowLeft className="h-4 w-4" />
             Go Back

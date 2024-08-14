@@ -11,26 +11,53 @@ const dbConnect = async () => {
 
 dbConnect();
 
-export const getMenuItems = async () => {
+export const getMenuItem = async (id: string) => {
   if (await isAdmin()) {
-    const menuItems = await MenuItem.find({});
+    const menuItem = await MenuItem.findById(id);
 
     return {
-      menuItems: menuItems.map((menuItem) => ({
+      menuItem: {
         _id: menuItem._id.toString(),
         name: menuItem.name,
         description: menuItem.description,
         basePrice: menuItem.basePrice,
         images: menuItem.images,
-      })),
+        sizes: menuItem.sizes,
+        extraIngredientPrices: menuItem.extraIngredientPrices,
+      },
     };
   } else {
     return {};
   }
 };
 
+export const getMenuItems = async () => {
+  if (await isAdmin()) {
+    const menuItems = await MenuItem.find({});
+
+    if (menuItems.length > 0) {
+      return {
+        menuItems: menuItems.map((menuItem) => ({
+          _id: menuItem._id.toString(),
+          name: menuItem.name,
+          description: menuItem.description,
+          basePrice: menuItem.basePrice,
+          images: menuItem.images,
+          sizes: menuItem.sizes,
+          extraIngredientPrices: menuItem.extraIngredientPrices,
+        })),
+      };
+    } else {
+      return {};
+    }
+  } else {
+    return {};
+  }
+};
+
 export const createMenuItem = async (data: MenuItemData) => {
-  const { name, description, basePrice, images } = data;
+  const { name, description, basePrice, images, sizes, extraIngredientPrices } =
+    data;
 
   if (!name || !description || !basePrice || !images) {
     throw new Error("All fields are required");
@@ -41,6 +68,8 @@ export const createMenuItem = async (data: MenuItemData) => {
     description,
     basePrice,
     images,
+    sizes,
+    extraIngredientPrices,
   });
 
   return {
@@ -50,6 +79,44 @@ export const createMenuItem = async (data: MenuItemData) => {
       description: menuItem.description,
       basePrice: menuItem.basePrice,
       images: menuItem.images,
+      sizes: menuItem.sizes,
+      extraIngredientPrices: menuItem.extraIngredientPrices,
     },
   };
+};
+
+export const updateMenuItem = async (data: MenuItemData) => {
+  const {
+    _id,
+    name,
+    description,
+    basePrice,
+    images,
+    sizes,
+    extraIngredientPrices,
+  } = data;
+
+  if (!_id || !name || !description || !basePrice || !images) {
+    throw new Error("All fields are required");
+  }
+
+  if (await isAdmin()) {
+    const menuItem = await MenuItem.findByIdAndUpdate(_id, {
+      name,
+      description,
+      basePrice,
+      images,
+      sizes,
+      extraIngredientPrices,
+    });
+
+    return {
+      menuItem: {
+        _id: menuItem._id.toString(),
+        name: menuItem.name,
+      },
+    };
+  } else {
+    throw new Error("Unauthorized");
+  }
 };

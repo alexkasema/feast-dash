@@ -10,3 +10,8 @@ interface UserDataType {
     city?: string;
   };
 }
+
+export interface TCategory {
+  _id: string;
+  name: string;
+}
