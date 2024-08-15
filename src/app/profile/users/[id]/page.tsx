@@ -1,24 +1,27 @@
 "use client";
 
-import UserForm from "@/components/UserForm";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { getUser, updateUser } from "./actions";
-import { FormEvent, useState } from "react";
-import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
+import UserForm from "@/components/UserForm";
+import { TUserData, UserDataType } from "@/lib/shared-types";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import React, { FormEvent, useEffect, useState } from "react";
+import { updateUser } from "../../user/actions";
 import { toast } from "sonner";
-import { TUserData } from "@/lib/shared-types";
 
-const UserProfilePage = () => {
-  const { data } = useQuery({
-    queryKey: ["get-user-profile"],
-    queryFn: async () => await getUser(),
-    retry: 3,
-    retryDelay: 500,
-  });
+const EditUserPage = () => {
+  const { id } = useParams();
 
-  const user = data?.user;
+  const [user, setUser] = useState<TUserData | null>(null);
+  useEffect(() => {
+    if (!id) return;
+    axios.get(`/api/users/?id=${id}`).then((response) => {
+      setUser(response.data);
+    });
+  }, [id]);
 
   const { mutate: updateProfile, isPending } = useMutation({
     mutationKey: ["update-user-information"],
@@ -31,12 +34,10 @@ const UserProfilePage = () => {
     },
   });
 
-  console.log(user);
-
   const onSave = (ev: FormEvent<HTMLFormElement>, data: TUserData) => {
     ev.preventDefault();
     // @ts-ignore
-    updateProfile(data);
+    updateProfile({ ...data, _id: id });
   };
 
   return (
@@ -55,7 +56,7 @@ const UserProfilePage = () => {
               variant: "link",
               className: "gap-1.5",
             })}
-            href="/"
+            href="/profile/users"
           >
             <ArrowLeft className="h-4 w-4" />
             Go Back
@@ -67,4 +68,4 @@ const UserProfilePage = () => {
   );
 };
 
-export default UserProfilePage;
+export default EditUserPage;

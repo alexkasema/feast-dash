@@ -36,7 +36,7 @@ const Steps = () => {
       <ol className="flex mx-auto gap-2 justify-center flex-wrap rounded-md bg-white lg:rounded-none lg:border-l lg:border-r lg:border-gray-200">
         {isAdmin
           ? ADMIN_STEPS.map((step, i) => {
-              const isCurrent = pathname.endsWith(step.url);
+              const isCurrent = pathname.includes(step.url);
 
               return (
                 <li

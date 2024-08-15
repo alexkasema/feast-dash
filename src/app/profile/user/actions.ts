@@ -2,6 +2,7 @@
 
 import { authOptions } from "@/lib/auth";
 import { mongooseConnect } from "@/lib/mongoose";
+import { TUserData } from "@/lib/shared-types";
 import { User } from "@/models/User";
 import { UserInfo } from "@/models/UserInfo";
 import { getServerSession } from "next-auth";
@@ -57,27 +58,32 @@ export const getUser = async () => {
   };
 };
 
-export const updateUser = async ({ data }: UserData) => {
+export const updateUser = async (data: TUserData) => {
   const session = await getServerSession();
   if (!session) {
     throw new Error("Unauthorized");
   }
 
-  const { name, isAdmin, ...otherUserInfo } = data;
+  const { _id, name, isAdmin, ...otherUserInfo } = data;
 
-  const email = session?.user?.email;
-
-  if (!email) {
-    throw new Error("Unauthorized");
+  let filterUser = {};
+  if (_id) {
+    filterUser = { _id };
+  } else {
+    const email = session?.user?.email;
+    if (!email) {
+      throw new Error("Unauthorized");
+    }
+    filterUser = { email };
   }
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne(filterUser);
 
   if (!user) {
     throw new Error("User not found");
   }
 
-  await User.updateOne({ email }, { name, isAdmin });
+  await User.updateOne(filterUser, { name, isAdmin });
   await UserInfo.findOneAndUpdate({ email: user.email }, otherUserInfo, {
     upsert: true,
   });

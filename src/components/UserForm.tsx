@@ -1,15 +1,21 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
-import { useMutation } from "@tanstack/react-query";
-import { updateUser } from "@/app/profile/user/actions";
-import { toast } from "sonner";
-import { Checkbox } from "./ui/checkbox";
 
-const UserForm = ({ user }: UserDataType) => {
+import { Checkbox } from "./ui/checkbox";
+import { TUserData } from "@/lib/shared-types";
+import { useProfile } from "./UseProfile";
+
+interface PageProps {
+  user: TUserData;
+  onSave: (ev: FormEvent<HTMLFormElement>, data: TUserData) => void;
+  isPending: boolean;
+}
+
+const UserForm = ({ user, onSave, isPending }: PageProps) => {
   const [isAdmin, setIsAdmin] = useState<boolean>(user?.isAdmin || false);
   const [name, setName] = useState<string>(user?.name || "");
   const [email, setEmail] = useState<string>(user?.email || "");
@@ -19,6 +25,8 @@ const UserForm = ({ user }: UserDataType) => {
   );
   const [postalCode, setPostalCode] = useState<string>(user?.postalCode || "");
   const [city, setCity] = useState<string>(user?.city || "");
+
+  const { data: loggedInUser } = useProfile();
 
   useEffect(() => {
     setName(user?.name || "");
@@ -30,18 +38,8 @@ const UserForm = ({ user }: UserDataType) => {
     setIsAdmin(user?.isAdmin || false);
   }, [user]);
 
-  const { mutate: updateProfile, isPending } = useMutation({
-    mutationKey: ["update-user-information"],
-    mutationFn: updateUser,
-    onSuccess: () => {
-      toast.success("User information updated successfully");
-    },
-    onError: (err) => {
-      toast.error(`Failed to update user information: ${err.message}`);
-    },
-  });
-
-  const onSubmit = () => {
+  const onSubmit = (ev: FormEvent<HTMLFormElement>) => {
+    ev.preventDefault();
     const data = {
       name,
       email,
@@ -51,11 +49,11 @@ const UserForm = ({ user }: UserDataType) => {
       city,
       isAdmin,
     };
-    updateProfile({ data });
+    onSave(ev, data);
   };
   return (
     <div className="grid gap-6">
-      <form onSubmit={onSubmit}>
+      <form onSubmit={(ev) => onSubmit(ev)}>
         <div className="grid gap-2">
           <div className="grid gap-1 py-2">
             <Label htmlFor="name">Name</Label>
@@ -123,7 +121,7 @@ const UserForm = ({ user }: UserDataType) => {
               />
             </div>
           </div>
-          {user?.isAdmin && (
+          {loggedInUser && (
             <div className="flex gap-1 py-2">
               <Label htmlFor="isAdmin">Is Admin</Label>
               <Checkbox
@@ -137,7 +135,7 @@ const UserForm = ({ user }: UserDataType) => {
           <Button
             disabled={isPending}
             isLoading={isPending}
-            loadingText="Saving changes"
+            loadingText="Saving user"
           >
             Save
           </Button>

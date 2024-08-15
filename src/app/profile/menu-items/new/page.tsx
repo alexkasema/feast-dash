@@ -77,7 +77,7 @@ const CreateMenuItemPage = () => {
               variant: "link",
               className: "gap-1.5",
             })}
-            href="/profilee/menu-items"
+            href="/profile/menu-items"
           >
             <ArrowLeft className="h-4 w-4" />
             Go Back
