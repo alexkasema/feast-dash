@@ -29,7 +29,7 @@ const Navbar = async () => {
               Home
             </Link>
             <Link
-              href="/"
+              href="/menu"
               className={buttonVariants({
                 variant: "ghost",
               })}
@@ -37,7 +37,7 @@ const Navbar = async () => {
               Menu
             </Link>
             <Link
-              href="/"
+              href="/#about"
               className={buttonVariants({
                 variant: "ghost",
               })}
@@ -45,7 +45,7 @@ const Navbar = async () => {
               About
             </Link>
             <Link
-              href="/"
+              href="/#contact"
               className={buttonVariants({
                 variant: "ghost",
               })}

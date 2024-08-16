@@ -19,7 +19,7 @@ import {
 } from "./actions";
 import { toast } from "sonner";
 
-interface Category {
+export interface Category {
   _id: string;
   categoryName: string;
 }
@@ -80,6 +80,7 @@ const CategoriesPage = () => {
     if (editedCategory) {
       const _id = editedCategory._id;
       const editedData = { ...data, _id };
+      // @ts-ignore
       updateMenuCategory({ editedData });
       setCategoryName("");
     } else {

@@ -16,6 +16,7 @@ const UserProfilePage = () => {
     queryFn: async () => await getUser(),
     retry: 3,
     retryDelay: 500,
+    refetchOnWindowFocus: false,
   });
 
   const user = data?.user;
@@ -30,8 +31,6 @@ const UserProfilePage = () => {
       toast.error(`Failed to update user information: ${err.message}`);
     },
   });
-
-  console.log(user);
 
   const onSave = (ev: FormEvent<HTMLFormElement>, data: TUserData) => {
     ev.preventDefault();

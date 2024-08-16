@@ -18,6 +18,15 @@ export interface UserDataType {
   };
 }
 
+export interface MenuItemsType {
+  _id: string;
+  name: string;
+  description: string;
+  basePrice: number;
+  category: string;
+  images: string[];
+}
+
 export interface TUserData {
   _id?: string;
   name?: string;

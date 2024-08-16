@@ -1,4 +1,5 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
+import MenuReel from "@/components/MenuReel";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import Link from "next/link";
@@ -63,6 +64,16 @@ export default function Home() {
               </Link>
             </div>
           </div>
+        </MaxWidthWrapper>
+      </section>
+
+      <section className="border-t border-gray-200 bg-gray-50">
+        <MaxWidthWrapper className="py-5">
+          <MenuReel
+            title="Our Menu"
+            subtitle="Discover our mouth-watering dishes"
+            href="/menu"
+          />
         </MaxWidthWrapper>
       </section>
     </div>
