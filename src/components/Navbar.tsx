@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import UserAccountNav from "./UserAccountNav";
 import { authOptions } from "@/lib/auth";
 import { useSession } from "next-auth/react";
+import Cart from "./Cart";
 
 const Navbar = async () => {
   const session = await getServerSession();
@@ -12,7 +13,7 @@ const Navbar = async () => {
   const user = session?.user;
 
   return (
-    <nav className="sticky z-[100] h-14 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
+    <nav className="sticky z-50 h-14 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
       <MaxWidthWrapper>
         <div className="flex h-14 items-center border-b border-zinc-200">
           <Link href="/" className="flex z-40 font-semibold">
@@ -92,7 +93,9 @@ const Navbar = async () => {
                   <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
                 </div>
               )}
-              <div className="ml-4 flow-root lg:ml-6">Cart (0)</div>
+              <div className="ml-4 flow-root lg:ml-6">
+                <Cart />
+              </div>
             </div>
           </div>
         </div>
