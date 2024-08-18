@@ -19,6 +19,11 @@ type CartState = {
   ) => void;
   removeItem: (indexToRemove: number) => void;
   clearCart: () => void;
+  cartMenuTotal: (
+    menu: MenuItemData,
+    size: { name: string; price: number } | null,
+    extras: { name: string; price: number }[] | null
+  ) => number | string;
 };
 
 export const useCart = create<CartState>()(
@@ -41,6 +46,19 @@ export const useCart = create<CartState>()(
           items: state.items.filter((item, index) => index !== indexToRemove),
         })),
       clearCart: () => set({ items: [] }),
+      cartMenuTotal: (menu, size, extras) => {
+        let selectedPrice = menu.basePrice;
+        if (size) {
+          selectedPrice += size.price;
+        }
+        if (extras!.length > 0) {
+          for (const extra of extras!) {
+            // @ts-ignore
+            selectedPrice += extra.price;
+          }
+        }
+        return selectedPrice;
+      },
     }),
     {
       name: "cart-storage",
