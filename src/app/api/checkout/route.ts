@@ -7,11 +7,11 @@ import { User } from "@/models/User";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
-// const dbConnect = async () => {
-//   await mongooseConnect();
-// };
+const dbConnect = async () => {
+  await mongooseConnect();
+};
 
-// dbConnect();
+dbConnect();
 
 export async function POST(req: Request) {
   const { address, items } = await req.json();

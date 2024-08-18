@@ -34,16 +34,21 @@ const CartPage = () => {
   const user = data?.user;
 
   useEffect(() => {
+    setIsMounted(true);
+    if (typeof window !== "undefined") {
+      if (window.location.href.includes("canceled=1")) {
+        toast.error("Payment failed 😔");
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     if (user) {
       const { phone, streetAddress, postalCode, city } = user;
       const userAddress = { phone, streetAddress, postalCode, city };
       setAddress(userAddress);
     }
   }, [user]);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   const proceedToCheckout = async () => {
     const savePromise: Promise<void> = new Promise(async (resolve, reject) => {
