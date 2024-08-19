@@ -48,7 +48,15 @@ export async function POST(req: Request) {
         throw new Error("Payment not completed");
       }
 
-      await Order.updateOne({ _id: orderId }, { isPaid: true });
+      const subTotal = session.amount_subtotal
+        ? session.amount_subtotal / 100
+        : 0;
+      const total = session.amount_total ? session.amount_total / 100 : 0;
+
+      await Order.updateOne(
+        { _id: orderId },
+        { isPaid: true, total, subTotal }
+      );
     }
 
     return NextResponse.json({ success: true });

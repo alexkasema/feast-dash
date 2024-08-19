@@ -72,7 +72,6 @@ export async function POST(req: Request) {
       line_items: stripeLineItems,
       mode: "payment",
       customer_email: userEmail,
-      shipping_address_collection: { allowed_countries: ["KE"] },
       success_url: `${process.env.NEXTAUTH_URL}/thank-you?orderId=${orderDoc.id}`,
       cancel_url: `${process.env.NEXTAUTH_URL}/cart?canceled=1`,
       metadata: {

@@ -69,13 +69,6 @@ const CartPage = () => {
       success: "Redirecting to payment...",
       error: "Something went wrong... Please try again later",
     });
-
-    // setIsLoading(true);
-    // const response = await axios.post("/api/checkout", { items, address });
-    // if (response.status === 200) {
-    //   router.push(response.data.url);
-    // }
-    // setIsLoading(false);
   };
 
   let total = 0;
@@ -229,58 +222,64 @@ const CartPage = () => {
           </div>
 
           <section className="mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8">
-            <h2 className="text-lg font-medium text-gray-900">Order summary</h2>
-            <div className="mt-6 space-y-4">
-              <div className="flex items-center justify-between">
-                <p className="text-sm text-gray-600">Subtotal</p>
-                <p className="text-sm font-medium text-gray-900">
-                  {isMounted ? (
-                    formatPrice(total)
-                  ) : (
-                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                  )}
-                </p>
-              </div>
+            {isMounted && items.length === 0 ? null : (
+              <>
+                <h2 className="text-lg font-medium text-gray-900">
+                  Order summary
+                </h2>
+                <div className="mt-6 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-gray-600">Subtotal</p>
+                    <p className="text-sm font-medium text-gray-900">
+                      {isMounted ? (
+                        formatPrice(total)
+                      ) : (
+                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                      )}
+                    </p>
+                  </div>
 
-              <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-                <div className="flex items-center text-sm text-muted-foreground">
-                  <span>Delivery Fee</span>
-                </div>
-                <div className="text-sm font-medium text-gray-900">
-                  {isMounted ? (
-                    formatPrice(DELIVERY_FEE)
-                  ) : (
-                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                  )}
-                </div>
-              </div>
+                  <div className="flex items-center justify-between border-t border-gray-200 pt-4">
+                    <div className="flex items-center text-sm text-muted-foreground">
+                      <span>Delivery Fee</span>
+                    </div>
+                    <div className="text-sm font-medium text-gray-900">
+                      {isMounted ? (
+                        formatPrice(DELIVERY_FEE)
+                      ) : (
+                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                      )}
+                    </div>
+                  </div>
 
-              <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-                <div className="text-base font-medium text-gray-900">
-                  Order Total
+                  <div className="flex items-center justify-between border-t border-gray-200 pt-4">
+                    <div className="text-base font-medium text-gray-900">
+                      Order Total
+                    </div>
+                    <div className="text-base font-medium text-gray-900">
+                      {isMounted ? (
+                        formatPrice(total + DELIVERY_FEE)
+                      ) : (
+                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div className="text-base font-medium text-gray-900">
-                  {isMounted ? (
-                    formatPrice(total + DELIVERY_FEE)
-                  ) : (
-                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                  )}
-                </div>
-              </div>
-            </div>
 
-            <div className="mt-6">
-              <Button
-                disabled={items.length === 0 || isLoading}
-                loadingText="Preparing your order"
-                isLoading={isLoading}
-                onClick={() => proceedToCheckout()}
-                className="w-full"
-                size="lg"
-              >
-                Checkout
-              </Button>
-            </div>
+                <div className="mt-6">
+                  <Button
+                    disabled={items.length === 0 || isLoading}
+                    loadingText="Preparing your order"
+                    isLoading={isLoading}
+                    onClick={() => proceedToCheckout()}
+                    className="w-full"
+                    size="lg"
+                  >
+                    Checkout
+                  </Button>
+                </div>
+              </>
+            )}
           </section>
         </div>
       </div>

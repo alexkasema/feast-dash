@@ -17,5 +17,7 @@ export async function GET() {
     } catch (error) {
       return NextResponse.error();
     }
+  } else {
+    return NextResponse.error();
   }
 }

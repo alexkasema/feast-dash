@@ -13,12 +13,14 @@ import {
   TAuthCredentialsValidator,
 } from "@/lib/validators/account-credentials-validator";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 
 const SignInPage = () => {
+  const searchParams = useSearchParams();
   const router = useRouter();
+  const origin = searchParams.get("origin");
 
   const [isPending, setIsPending] = useState<boolean>(false);
 
@@ -38,6 +40,7 @@ const SignInPage = () => {
       toast.success(
         "Welcome to FeastDash, Browse through our menu to discover amazing meals"
       );
+
       setIsPending(false);
     } catch (err) {
       toast.error(

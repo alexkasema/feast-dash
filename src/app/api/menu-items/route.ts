@@ -89,6 +89,8 @@ export async function PUT(req: Request) {
     } catch (error) {
       return NextResponse.error();
     }
+  } else {
+    return NextResponse.error();
   }
 }
 
@@ -102,5 +104,7 @@ export async function DELETE(req: Request) {
     } catch (error) {
       return NextResponse.error();
     }
+  } else {
+    return NextResponse.error();
   }
 }

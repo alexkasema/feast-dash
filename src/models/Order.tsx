@@ -8,6 +8,8 @@ const OrderSchema = new Schema(
     postalCode: String,
     city: String,
     items: Object,
+    total: Number,
+    subTotal: Number,
     isPaid: { type: Boolean, default: false },
   },
   { timestamps: true }
