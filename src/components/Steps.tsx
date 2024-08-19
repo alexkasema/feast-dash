@@ -93,7 +93,7 @@ const Steps = () => {
               );
             })
           : USER_STEPS.map((step, i) => {
-              const isCurrent = pathname.endsWith(step.url);
+              const isCurrent = pathname.includes(step.url);
 
               return (
                 <li

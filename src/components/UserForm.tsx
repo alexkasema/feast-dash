@@ -26,8 +26,6 @@ const UserForm = ({ user, onSave, isPending }: PageProps) => {
   const [postalCode, setPostalCode] = useState<string>(user?.postalCode || "");
   const [city, setCity] = useState<string>(user?.city || "");
 
-  const { data: loggedInUser } = useProfile();
-
   useEffect(() => {
     setName(user?.name || "");
     setEmail(user?.email || "");
@@ -121,7 +119,7 @@ const UserForm = ({ user, onSave, isPending }: PageProps) => {
               />
             </div>
           </div>
-          {loggedInUser && (
+          {user?.isAdmin && (
             <div className="flex gap-1 py-2">
               <Label htmlFor="isAdmin">Is Admin</Label>
               <Checkbox

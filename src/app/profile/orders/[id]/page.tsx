@@ -31,8 +31,6 @@ const OrderDetailsPage = () => {
     setIsLoading(false);
   };
 
-  console.log(order);
-
   return (
     <div className="flex min-h-screen w-full">
       <div className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">

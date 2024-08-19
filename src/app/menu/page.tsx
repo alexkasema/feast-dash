@@ -15,7 +15,7 @@ const MenuPage = () => {
 
   useEffect(() => {
     fetchCategories();
-    axios.get("/api/menu-items").then((res) => {
+    axios.get("/api/menu").then((res) => {
       setMenuItems(res.data);
     });
   }, []);
