@@ -22,7 +22,7 @@ const MenuReel = (props: MenuReelProps) => {
 
   useEffect(() => {
     setIsLoading(true);
-    axios.get("/api/reel-menu-items").then((res) => {
+    axios.get("/api/menu").then((res) => {
       setMenuItems(res.data);
       setIsLoading(false);
     });
