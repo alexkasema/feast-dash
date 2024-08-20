@@ -1,10 +1,8 @@
 "use client";
 
-import { MenuItemsType } from "@/lib/shared-types";
-import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MenuListing from "./MenuListing";
 import { MenuItemData } from "./MenuItemForm";
 
@@ -19,16 +17,16 @@ const FALLBACK_LIMIT = 4;
 const MenuReel = (props: MenuReelProps) => {
   const { title, subtitle, href } = props;
 
-  const { data: menuItems, isLoading } = useQuery({
-    queryKey: ["menu"],
-    queryFn: async () => {
-      const response = await axios.get("/api/reel-menu-items");
-      return response.data;
-    },
-    retry: 3,
-    retryDelay: 500,
-    refetchOnWindowFocus: false,
-  });
+  const [menuItems, setMenuItems] = useState<MenuItemData[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    axios.get("/api/reel-menu-items").then((res) => {
+      setMenuItems(res.data);
+      setIsLoading(false);
+    });
+  }, []);
 
   let menuItemsList: (MenuItemData | null)[] = [];
   if (menuItems && menuItems.length) {
