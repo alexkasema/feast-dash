@@ -6,8 +6,6 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
-import { getMenuItem, updateMenuItem } from "../../new/actions";
-import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import axios from "axios";
 import { cn } from "@/lib/utils";
@@ -17,31 +15,15 @@ const EditMenuItemPage = () => {
   const router = useRouter();
   const [menuItem, setMenuItem] = useState<MenuItemData | null>(null);
   const [goToProducts, setGoToProducts] = useState(false);
-  const [isPending, setisPending] = useState<boolean>(false);
+  const [isPending, setIsPending] = useState<boolean>(false);
 
+  //! Fetch the menu item on mount
   useEffect(() => {
     if (!id) return;
     axios.get(`/api/menu-items/?id=${id}`).then((response) => {
       setMenuItem(response.data);
     });
   }, [id]);
-
-  // const { mutate: updateMenu, isPending } = useMutation({
-  //   mutationKey: ["update-menu-item"],
-  //   mutationFn: updateMenuItem,
-  //   onMutate: () => {
-  //     toast.loading("Updating menu item...");
-  //   },
-  //   onSuccess: ({ menuItem }) => {
-  //     console.log(menuItem);
-  //     toast.success(`${menuItem.name} updated successfully`);
-  //     router.push("/profilee/menu-items");
-  //   },
-  //   onError: (error) => {
-  //     console.error(error);
-  //     toast.error(`Failed to create menu item: ${error.message}`);
-  //   },
-  // });
 
   const handleSubmit = async (
     ev: FormEvent<HTMLFormElement>,
@@ -51,10 +33,10 @@ const EditMenuItemPage = () => {
     const updatePromise: Promise<void> = new Promise(
       async (resolve, reject) => {
         const response = await axios.put("/api/menu-items", { ...data, id });
-        setisPending(true);
+        setIsPending(true);
         if (response.status === 200) {
           setGoToProducts(true);
-          setisPending(false);
+          setIsPending(false);
           resolve();
         } else {
           reject();

@@ -7,7 +7,6 @@ import { notFound, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { formatPrice } from "@/lib/utils";
 import Link from "next/link";
-import { useCart } from "@/hooks/use-cart";
 import ClearCartComponent from "./ClearCartComponent";
 
 interface PageProps {
@@ -54,7 +53,8 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
             <ClearCartComponent />
             {order.isPaid ? (
               <p className="mt-2 text-base text-muted-foreground">
-                Your order has been received and is being processed 😊.
+                Your order has been received and is being processed 😊. We will
+                contact you shortly.
               </p>
             ) : (
               <p className="mt-2 text-base text-muted-foreground">

@@ -1,6 +1,6 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import MenuReel from "@/components/MenuReel";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import Link from "next/link";
 
@@ -8,12 +8,12 @@ export default function Home() {
   return (
     <div className="bg-slate-50 grainy-light">
       <section>
-        <MaxWidthWrapper className="pb-24 pt-10 lg:grid lg:grid-cols-3 sm:pb-32 lg:gap-x-0 xl:gap-x-8 lg:pt-15 xl:pt-30 lg:pb-52">
+        <MaxWidthWrapper className="pb-24 pt-10 lg:grid lg:grid-cols-3 sm:pb-32 lg:gap-x-0 xl:gap-x-8 lg:pt-15 xl:pt-30 lg:pb-30">
           <div className="col-span-2 px-6 lg:px-0 lg:pt-4">
             <div className="relative mx-auto text-center lg:text-left flex flex-col items-center lg:items-start">
               <h1 className="relative w-fit tracking-tight text-balance mt-16 font-bold !leading-tight text-gray-900 text-5xl md:text-4xl lg:text-5xl">
-                Welcome to FeastDash where gourmet flavors meet the comfort of
-                your home
+                Welcome to Feast<span className="text-green-600">Dash</span>{" "}
+                where gourmet flavors meet the comfort of your home
               </h1>
               <p className="mt-8 text-lg lg:pr-10 max-w-prose text-center lg:text-left text-balance md:text-wrap">
                 Discover our{" "}
@@ -52,7 +52,7 @@ export default function Home() {
             </div>
             <div className="mt-10 flex items-center justify-center gap-3">
               <Link
-                href="/"
+                href="/menu"
                 className={buttonVariants({
                   variant: "outline",
                   size: "lg",

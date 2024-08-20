@@ -2,11 +2,9 @@
 
 import MenuItemForm, { MenuItemData } from "@/components/MenuItemForm";
 import { buttonVariants } from "@/components/ui/button";
-import { useMutation } from "@tanstack/react-query";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
-import { createMenuItem } from "./actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -14,23 +12,7 @@ import axios from "axios";
 const CreateMenuItemPage = () => {
   const router = useRouter();
   const [goToProducts, setGoToProducts] = useState(false);
-  const [isPending, setisPending] = useState<boolean>(false);
-  // const { mutate: createMenu, isPending } = useMutation({
-  //   mutationKey: ["create-menu-item"],
-  //   mutationFn: createMenuItem,
-  //   onMutate: () => {
-  //     toast.loading("Creating menu item...");
-  //   },
-  //   onSuccess: ({ menuItem }) => {
-  //     console.log(menuItem);
-  //     toast.success(`${menuItem.name} created successfully`);
-  //     router.push("/profilee/menu-items");
-  //   },
-  //   onError: (error) => {
-  //     console.error(error);
-  //     toast.error(`Failed to create menu item: ${error.message}`);
-  //   },
-  // });
+  const [isPending, setIsPending] = useState<boolean>(false);
 
   const handleSubmit = async (
     ev: FormEvent<HTMLFormElement>,
@@ -40,10 +22,10 @@ const CreateMenuItemPage = () => {
 
     const savePromise: Promise<void> = new Promise(async (resolve, reject) => {
       const response = await axios.post("/api/menu-items", data);
-      setisPending(true);
+      setIsPending(true);
       if (response.status === 200) {
         setGoToProducts(true);
-        setisPending(false);
+        setIsPending(false);
         resolve();
       } else {
         reject();

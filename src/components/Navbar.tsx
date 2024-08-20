@@ -3,9 +3,8 @@ import MaxWidthWrapper from "./MaxWidthWrapper";
 import { buttonVariants } from "./ui/button";
 import { getServerSession } from "next-auth";
 import UserAccountNav from "./UserAccountNav";
-import { authOptions } from "@/lib/auth";
-import { useSession } from "next-auth/react";
 import Cart from "./Cart";
+import MobileNav from "./MobileNav";
 
 const Navbar = async () => {
   const session = await getServerSession();
@@ -20,7 +19,7 @@ const Navbar = async () => {
             Feast<span className="text-green-600">Dash</span>
           </Link>
 
-          <div className="h-full flex items-center space-x-4 md:ml-8 md:self-stretch">
+          <div className=" h-full flex items-center space-x-4 md:ml-8 md:self-stretch">
             <Link
               href="/"
               className={buttonVariants({
@@ -36,22 +35,6 @@ const Navbar = async () => {
               })}
             >
               Menu
-            </Link>
-            <Link
-              href="/#about"
-              className={buttonVariants({
-                variant: "ghost",
-              })}
-            >
-              About
-            </Link>
-            <Link
-              href="/#contact"
-              className={buttonVariants({
-                variant: "ghost",
-              })}
-            >
-              Contact
             </Link>
           </div>
 
@@ -98,6 +81,7 @@ const Navbar = async () => {
               </div>
             </div>
           </div>
+          <MobileNav user={user!} />
         </div>
       </MaxWidthWrapper>
     </nav>

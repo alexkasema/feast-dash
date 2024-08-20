@@ -23,7 +23,6 @@ import { cn } from "@/lib/utils";
 import axios from "axios";
 import { Check, Loader2, X } from "lucide-react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const UsersPage = () => {

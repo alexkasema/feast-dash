@@ -13,6 +13,7 @@ const MenuPage = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [menuItems, setMenuItems] = useState<MenuItemData[]>([]);
 
+  //! Fetch categories and menu items
   useEffect(() => {
     fetchCategories();
     axios.get("/api/menu").then((res) => {
@@ -28,6 +29,17 @@ const MenuPage = () => {
   return (
     <div className="flex min-h-screen w-full bg-muted/40">
       <MaxWidthWrapper className="max-w-7xl w-full mx-auto flex flex-col sm:gap-4 sm:py-4">
+        <h1 className="relative w-fit text-center tracking-tight text-balance mt-16 font-bold !leading-tight text-gray-900 text-5xl md:text-6xl lg:text-7xl">
+          Explore Our Culinary <span className="text-green-600">Delights</span>
+        </h1>
+        <p className="mt-8  text-lg lg:pr-10 max-w-prose text-center lg:text-left text-balance md:text-wrap">
+          Feast your eyes on our carefully curated menu, featuring a selection
+          of our most popular and mouth-watering dishes. Whether you're in the
+          mood for a savory classic or something new, we've got something to
+          satisfy every craving.{" "}
+          <span className="font-semibold text-green-600">Order now</span> and
+          let the flavors come to you!
+        </p>
         <div className="flex flex-col gap-16">
           <div className="mt-8">
             {categories.length > 0 ? (

@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { TUserData } from "@/lib/shared-types";
 
 const UserProfilePage = () => {
+  //! Fetch the user profile on mount
   const { data } = useQuery({
     queryKey: ["get-user-profile"],
     queryFn: async () => await getUser(),
@@ -21,6 +22,7 @@ const UserProfilePage = () => {
 
   const user = data?.user;
 
+  //! Update the user profile
   const { mutate: updateProfile, isPending } = useMutation({
     mutationKey: ["update-user-information"],
     mutationFn: updateUser,

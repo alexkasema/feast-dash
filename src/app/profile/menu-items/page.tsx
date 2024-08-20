@@ -6,24 +6,21 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { getMenuItems } from "./new/actions";
 
 import axios from "axios";
+import { cn } from "@/lib/utils";
+import ImageSlider from "@/components/ImageSlider";
 
 const MenuItemsPage = () => {
-  // const [menuItems, setMenuItems] = useState<MenuItemData[]>([]);
   const [menuItems, setMenuItems] = useState<MenuItemData[]>([]);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   getMenuItems().then(({ menuItems }) => {
-  //     setMenuItems(menuItems!);
-  //   });
-  // }, []);
-
+  //! Fetch menu items on mount
   useEffect(() => {
     axios.get("/api/menu-items").then((res) => {
       setMenuItems(res.data);
     });
+    setIsMounted(true);
   }, []);
 
   return (
@@ -45,22 +42,23 @@ const MenuItemsPage = () => {
         <div className="grid grid-cols-3 gap-2 ">
           {menuItems?.length > 0 &&
             menuItems.map((item) => (
-              <Link
-                key={item._id}
-                href={"/profile/menu-items/edit/" + item._id}
-                className="bg-gray-200 rounded-lg p-4"
-              >
-                <div className="relative">
-                  <Image
-                    className="rounded-md"
-                    src={item.images[0]}
-                    alt={item.images[0]}
-                    width={200}
-                    height={200}
-                  />
-                </div>
-                <div className="text-center">{item.name}</div>
-              </Link>
+              <div key={item._id} className="flex flex-col w-[50%]">
+                <Link
+                  className={cn(
+                    "invisible h-full w-full cursor-pointer group/main",
+                    {
+                      "visible animate-in fade-in-5": isMounted,
+                    }
+                  )}
+                  href={"/profile/menu-items/edit/" + item._id}
+                >
+                  <ImageSlider urls={item.images} />
+                </Link>
+
+                <h3 className="mt-4 font-medium text-sm text-gray-700">
+                  {item.name}
+                </h3>
+              </div>
             ))}
         </div>
       </div>

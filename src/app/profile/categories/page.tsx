@@ -29,6 +29,7 @@ const CategoriesPage = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [editedCategory, setEditedCategory] = useState<Category | null>(null);
 
+  //! Fetch categories on mount
   useEffect(() => {
     fetchCategories();
   }, []);

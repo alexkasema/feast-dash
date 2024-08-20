@@ -18,7 +18,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useProfile } from "@/components/UseProfile";
 import { OrderType } from "@/lib/shared-types";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";

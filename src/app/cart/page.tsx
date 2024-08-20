@@ -23,6 +23,7 @@ const CartPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [address, setAddress] = useState({});
 
+  //! Fetch user profile
   const { data } = useQuery({
     queryKey: ["get-user-profile"],
     queryFn: async () => await getUser(),
@@ -69,6 +70,16 @@ const CartPage = () => {
       success: "Redirecting to payment...",
       error: "Something went wrong... Please try again later",
     });
+  };
+
+  //! Check if there is a user in session before proceeding to checkout
+  const handleCheckout = () => {
+    if (!user) {
+      router.push("/sign-in");
+      toast.error("Please sign in to proceed to checkout");
+    } else {
+      proceedToCheckout();
+    }
   };
 
   let total = 0;
@@ -271,7 +282,7 @@ const CartPage = () => {
                     disabled={items.length === 0 || isLoading}
                     loadingText="Preparing your order"
                     isLoading={isLoading}
-                    onClick={() => proceedToCheckout()}
+                    onClick={() => handleCheckout()}
                     className="w-full"
                     size="lg"
                   >
