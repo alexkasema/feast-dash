@@ -13,7 +13,7 @@ import {
 import { signOut } from "next-auth/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { Session } from "next-auth";
+import { useCart } from "@/hooks/use-cart";
 
 interface PageProps {
   user: {
@@ -25,6 +25,7 @@ interface PageProps {
 
 const UserAccountNav = ({ user }: PageProps) => {
   const router = useRouter();
+  const { clearCart } = useCart();
   let userName = user?.name || user?.email;
 
   if (userName && userName.includes(" ")) {
@@ -33,7 +34,9 @@ const UserAccountNav = ({ user }: PageProps) => {
 
   const signOutHandler = async () => {
     await signOut({ callbackUrl: "/" });
+    clearCart();
     toast.success("Logged out successfully, come back soon");
+    router.refresh();
   };
   return (
     <DropdownMenu>

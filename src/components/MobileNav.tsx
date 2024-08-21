@@ -32,7 +32,7 @@ const MobileNav2 = ({ user }: PageProps) => {
       {mobileNavOpen && (
         <div
           onClick={() => setMobileNavOpen(false)}
-          className="md:hidden p-4 bg-gray-200 rounded-lg mt-2 flex flex-col gap-2 text-center"
+          className="md:hidden p-4 bg-gray-200 rounded-lg my-auto flex flex-col gap-2 text-center"
         >
           <Link
             href="/"

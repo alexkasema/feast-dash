@@ -36,12 +36,34 @@ const SignInPage = () => {
     setIsPending(true);
 
     try {
-      await signIn("credentials", { email, password, callbackUrl: "/" });
-      toast.success(
-        "Welcome to FeastDash, Browse through our menu to discover amazing meals"
-      );
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+        callbackUrl: "/",
+      });
 
       setIsPending(false);
+
+      if (result?.error) {
+        toast.error(
+          "Something went wrong, Please check your credentials and try again"
+        );
+
+        router.refresh();
+      } else {
+        toast.success(
+          "Welcome to FeastDash!, Browse through our menu to discover amazing meals"
+        );
+
+        if (origin) {
+          router.push(`/${origin}`);
+          router.refresh();
+          return;
+        }
+        router.push("/");
+        router.refresh();
+      }
     } catch (err) {
       toast.error(
         "Something went wrong, Please check your credentials and try again"

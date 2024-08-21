@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Check, X, Loader2 } from "lucide-react";
+import { Check, X, Loader2, ArrowRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { getUser } from "../profile/user/actions";
 import axios from "axios";
@@ -75,7 +75,7 @@ const CartPage = () => {
   //! Check if there is a user in session before proceeding to checkout
   const handleCheckout = () => {
     if (!user) {
-      router.push("/sign-in");
+      router.push("/sign-in?origin=cart");
       toast.error("Please sign in to proceed to checkout");
     } else {
       proceedToCheckout();
@@ -130,6 +130,7 @@ const CartPage = () => {
                   })}
                 >
                   Add items to your cart to checkout
+                  <ArrowRight />
                 </Link>
               </div>
             ) : null}
